@@ -22,7 +22,6 @@ type StrDigitToTuple<T extends string> = T extends keyof DigitToTupleMap ? Digit
 type StringToDigit<T extends string> = T extends keyof StringToDigitMap ? StringToDigitMap[T] : never;
 
 type StrToTuple<T extends string> = T extends `${infer Fst}${infer Rest}` ? [Fst, ...StrToTuple<Rest>] : [];
-
 type StringToDigitMap = {
   '0': 0;
   '1': 1;
@@ -35,11 +34,8 @@ type StringToDigitMap = {
   '8': 8;
   '9': 9;
 };
-
 type SumStrDigits<D1 extends string, D2 extends string, D3 extends string> = [...StrDigitToTuple<D1>, ...StrDigitToTuple<D2>, ...StrDigitToTuple<D3>]['length'];
-
 type ConcatStrings<T> = T extends [infer Fst, ...infer TRest] ? Fst extends string ? `${Fst}${ConcatStrings<TRest>}` : never : '';
-
 // core
 type SumTupleOfStrDigits<Num1, Num2, Carry extends string> =
   Num1 extends []
@@ -63,26 +59,21 @@ type SumTupleOfStrDigits<Num1, Num2, Carry extends string> =
             : never
           : never
         : never;
-
 type Range<TMax extends number, TCurrent extends Array<unknown> = []> =
   TCurrent['length'] extends TMax
     ? TCurrent
     : Range<TMax, [...TCurrent, TCurrent['length']]>;
-
 type NumberRange = Range<999>[number]; // https://github.com/microsoft/TypeScript/pull/45711
-
 type StringToNumberMap = {
   [Key in NumberRange as `${Key}`]: Key
 };
-
 type StringToNumber<T extends string> =
   T extends keyof StringToNumberMap
     ? StringToNumberMap[T]
     : never;
-
-type Sum<Num1 extends number, Num2 extends number> = StringToNumber<SumTupleOfStrDigits<StrToTuple<`${Num1}`>, StrToTuple<`${Num2}`>, '0'>>;
-
-type SumWithoutConvert<Num1 extends number, Num2 extends number> = SumTupleOfStrDigits<StrToTuple<`${Num1}`>, StrToTuple<`${Num2}`>, '0'>;
+type Sum<Num1 extends number, Num2 extends number> = StringToNumber<SumStringNumbers<`${Num1}`, `${Num2}`>>;
+type SumWithoutConvert<Num1 extends number, Num2 extends number> = SumStringNumbers<`${Num1}`, `${Num2}`>;
+type SumStringNumbers<Num1 extends string, Num2 extends string> = SumTupleOfStrDigits<StrToTuple<Num1>, StrToTuple<Num2>, '0'>;
 
 type test1 = Sum<55, 67>;
 type test2 = Sum<256, 346>;
@@ -91,3 +82,11 @@ type test11 = SumWithoutConvert<55, 67>;
 type test12 = SumWithoutConvert<256, 1546>;
 
 type converted = StringToNumber<'970'>;
+
+const add = <A extends number, B extends number>(a: A, b: B): Sum<A, B> => (a + b) as any;
+
+export type Mul<A extends number, B extends number, Counter extends number = 0, ACC extends number = 0> =
+  A extends Counter ? ACC : Mul<A, B, Sum<1, Counter>, Sum<B, ACC>>;
+
+type JIO = Mul<2, 3>;
+type JIOff = Mul<220, 3>;
