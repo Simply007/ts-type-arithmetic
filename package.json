@@ -1,0 +1,45 @@
+{
+  "name": "ts-type-arithmetic",
+  "version": "1.0.0",
+  "description": "Type-level arithmetic operations (addition and multiplication) for TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "test:types": "tsd",
+    "inspect": "npx tsx tools/inspect-types.ts",
+    "prepublishOnly": "npm run build && npm run test:types"
+  },
+  "keywords": [
+    "typescript",
+    "type-level",
+    "arithmetic",
+    "sum",
+    "multiply",
+    "types"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.0.6",
+    "tsd": "^0.31.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "tsd": {
+    "directory": "test-d",
+    "compilerOptions": {
+      "strict": true,
+      "target": "ES2020"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
