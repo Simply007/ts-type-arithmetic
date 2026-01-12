@@ -52,10 +52,8 @@ export type SumTupleOfStrDigits<
           : never
         : never;
 
-type SumStringNumbers<Num1 extends string, Num2 extends string> = SumTupleOfStrDigits<StrToTuple<Num1>, StrToTuple<Num2>>;
-
-type StringToNumber<T extends string> = T extends `${infer Res extends number}` ? Res : never;
-
+export type SumStringNumbers<Num1 extends string, Num2 extends string> = SumTupleOfStrDigits<StrToTuple<Num1>, StrToTuple<Num2>>;
+export type StringToNumber<T extends string> = T extends `${infer Res extends number}` ? Res : never;
 export type Sum<Num1 extends number, Num2 extends number> = StringToNumber<SumStringNumbers<`${Num1}`, `${Num2}`>>;
 
 export type Mul<A extends number, B extends number, Counter extends number = 0, ACC extends number = 0> =
