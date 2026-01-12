@@ -103,7 +103,7 @@ function evalTypes(evalExpressions: string[], sourceFile: string): void {
   // Build virtual source that imports types and creates type aliases for each expression
   const typeAliases = evalExpressions.map((expr, i) => `type _Eval${i} = ${expr};`).join('\n');
   const virtualSource = `
-import { Sum, Mul, Digit, DigitToTupleMap, StrDigitToTuple, StrToTuple, SumStrDigits } from '${sourceFile}';
+import { Sum, Mul, Digit, DigitToTupleMap, StrDigitToTuple, StrToTuple, SumStrDigits, ConcatStrings, SumTupleOfStrDigits } from '${sourceFile}';
 ${typeAliases}
 `;
 

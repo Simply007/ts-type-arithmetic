@@ -21,12 +21,12 @@ export type StrToTuple<T extends string, Accum extends readonly string[] = []> =
 
 export type SumStrDigits<D1 extends string, D2 extends string, D3 extends string> = [...StrDigitToTuple<D1>, ...StrDigitToTuple<D2>, ...StrDigitToTuple<D3>]['length'];
 
-type ConcatStrings<T extends readonly string[], Accum extends string = ''> =
+export type ConcatStrings<T extends readonly string[], Accum extends string = ''> =
   T extends [infer Fst extends string, ...infer TRest extends readonly string[]]
     ? ConcatStrings<TRest, `${Accum}${Fst}`>
     : Accum;
 
-type SumTupleOfStrDigits<Num1 extends readonly string[], Num2 extends readonly string[], Carry extends string = '0', Accum extends string = ''> =
+export type SumTupleOfStrDigits<Num1 extends readonly string[], Num2 extends readonly string[], Carry extends string = '0', Accum extends string = ''> =
   Num1 extends []
     ? Carry extends '0' ? `${ConcatStrings<Num2>}${Accum}` : SumTupleOfStrDigits<[Carry], Num2, '0', Accum>
     : Num2 extends []
