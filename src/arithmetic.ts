@@ -1,8 +1,8 @@
 // based on https://gist.github.com/Simply007/1a166cf59405169785bee6573f00d0b5.git
 
-type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
-type DigitToTupleMap = {
+export type DigitToTupleMap = {
   '0': [];
   '1': [0];
   '2': [0, 0];
@@ -15,11 +15,11 @@ type DigitToTupleMap = {
   '9': [0, 0, 0, 0, 0, 0, 0, 0, 0];
 };
 
-type StrDigitToTuple<T extends string> = T extends keyof DigitToTupleMap ? DigitToTupleMap[T] : never;
+export type StrDigitToTuple<T extends string> = T extends keyof DigitToTupleMap ? DigitToTupleMap[T] : never;
 
-type StrToTuple<T extends string, Accum extends readonly string[] = []> = T extends `${infer Fst}${infer Rest}` ? StrToTuple<Rest, [...Accum, Fst]> : Accum;
+export type StrToTuple<T extends string, Accum extends readonly string[] = []> = T extends `${infer Fst}${infer Rest}` ? StrToTuple<Rest, [...Accum, Fst]> : Accum;
 
-type SumStrDigits<D1 extends string, D2 extends string, D3 extends string> = [...StrDigitToTuple<D1>, ...StrDigitToTuple<D2>, ...StrDigitToTuple<D3>]['length'];
+export type SumStrDigits<D1 extends string, D2 extends string, D3 extends string> = [...StrDigitToTuple<D1>, ...StrDigitToTuple<D2>, ...StrDigitToTuple<D3>]['length'];
 
 type ConcatStrings<T extends readonly string[], Accum extends string = ''> =
   T extends [infer Fst extends string, ...infer TRest extends readonly string[]]

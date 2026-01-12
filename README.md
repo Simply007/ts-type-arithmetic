@@ -61,6 +61,8 @@ npm run inspect -- src/arithmetic.ts --pattern "Sum|Mul"
 
 The library uses TypeScript's template literal types and tuple manipulation to perform digit-by-digit arithmetic at the type level. This allows TypeScript to compute exact numeric literal types for addition and multiplication operations.
 
+See [DEMO.md](./DEMO.md) for a step-by-step breakdown of how `Sum` computes results at the type level.
+
 ## Limitations
 
 - Due to TypeScript's recursion limits, very large numbers may cause compilation errors
