@@ -40,13 +40,19 @@ export type SumTupleOfStrDigits<
       ? Carry extends '0'
         ? `${ConcatStrings<Num1>}${Accum}`
         : SumTupleOfStrDigits<[Carry], Num1, '0', Accum>
-      : Num1 extends [...infer TRest1 extends readonly string[], infer TStrDigit1 extends string]
-        ? Num2 extends [...infer TRest2 extends readonly string[], infer TStrDigit2 extends string]
+      : Num1 extends [
+          ...infer TRest1 extends readonly string[],
+          infer TStrDigit1 extends string
+        ]
+        ? Num2 extends [
+          ...infer TRest2 extends readonly string[],
+           infer TStrDigit2 extends string
+          ]
           ? SumStrDigits<TStrDigit1, TStrDigit2, Carry> extends infer TSum extends number
             ? TSum extends Digit
               ? SumTupleOfStrDigits<TRest1, TRest2, '0', `${TSum}${Accum}`>
-              : `${TSum}` extends `${infer NextCarry}${infer CurrentDigit}`
-                ? SumTupleOfStrDigits<TRest1, TRest2, NextCarry, `${CurrentDigit}${Accum}`>
+              : `${TSum}` extends `${infer NextCarry}${infer CurrentDig}`
+                ? SumTupleOfStrDigits<TRest1, TRest2, NextCarry, `${CurrentDig}${Accum}`>
                 : never
             : never
           : never
@@ -58,3 +64,5 @@ export type Sum<Num1 extends number, Num2 extends number> = StringToNumber<SumSt
 
 export type Mul<A extends number, B extends number, Counter extends number = 0, ACC extends number = 0> =
   A extends Counter ? ACC : Mul<A, B, Sum<1, Counter>, Sum<B, ACC>>;
+
+
