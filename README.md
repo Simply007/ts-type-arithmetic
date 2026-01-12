@@ -92,6 +92,41 @@ npm run test:types
 npm run build
 ```
 
+## Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run build` | Compile TypeScript to JavaScript (outputs to `dist/`) |
+| `npm run clean` | Remove the `dist/` directory |
+| `npm run test:types` | Run type tests using [tsd](https://github.com/tsdjs/tsd) |
+| `npm run inspect` | Interactive type inspector tool (`npm run inspect -- --help` for all options) |
+| `npm run inspect:sum` | Quick example: inspect `Sum<1234, 5678>` |
+| `npm run benchmark` | Run performance benchmarks and find recursion limits |
+
+### Inspect Tool Examples
+
+```bash
+# Evaluate type expressions directly
+npm run inspect -- --eval "Sum<55, 67>" "Mul<12, 10>"
+
+# Inspect all exported types in a file
+npm run inspect -- learning/01-arithmetic-digits.ts
+
+# Filter types by pattern (regex)
+npm run inspect -- learning/01-arithmetic-digits.ts --pattern "^test"
+
+# Combine file inspection with additional expressions
+npm run inspect -- src/arithmetic.ts --eval "Sum<999, 1>"
+```
+
+### Benchmark
+
+The benchmark tool compares type-level arithmetic against JavaScript runtime and discovers recursion limits:
+
+- **Speed comparison**: Measures type-level `Sum` evaluation time vs JavaScript `+` operator
+- **Sum recursion limit**: `Sum` uses digit-by-digit processing, so it can handle very large numbers (tested up to 1 billion)
+- **Mul recursion limit**: `Mul<A, B>` recurses `A` times, so the first operand determines the limit (~500-1000 depending on TypeScript version)
+
 ## Usage
 
 ### Type-level operations
@@ -115,7 +150,7 @@ const product = mul(32, 47); // Type: 1504
 
 ## Repository Structure
 
-```
+```plain
 ├── learning/                    # Step-by-step learning materials
 │   ├── 00-BUILDING_BLOCS.md    # TypeScript building blocks (start here!)
 │   ├── 01-arithmetic-digits.ts  # Single digit addition
