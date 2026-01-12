@@ -8,6 +8,8 @@ Before diving into the arithmetic types, let's understand the TypeScript feature
 
 ### 1.1 Conditional Types
 
+📚 [TypeScript Docs: Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
+
 Conditional types work like ternary expressions but for types:
 
 ```typescript
@@ -21,6 +23,8 @@ The pattern `T extends U ? X : Y` means: "If T is assignable to U, resolve to X,
 
 ### 1.2 The `infer` Keyword
 
+📚 [TypeScript Docs: Inferring Within Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types)
+
 `infer` lets you extract parts of a type during pattern matching:
 
 ```typescript
@@ -33,6 +37,8 @@ type B = GetFirstElement<["a", "b"]>; // "a"
 It's like destructuring, but for types. The `infer First` declares a type variable that captures whatever matches that position.
 
 ### 1.3 Template Literal Types
+
+📚 [TypeScript Docs: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 
 TypeScript can manipulate string literal types:
 
@@ -48,6 +54,9 @@ type B = ExtractName<"Hi, Bob">; // never (doesn't match pattern)
 
 ### 1.4 Tuple Types and Spread
 
+📚 [TypeScript Docs: Tuple Types](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types)
+📚 [TypeScript Docs: Variadic Tuple Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html#variadic-tuple-types)
+
 Tuples are fixed-length arrays with known types at each position:
 
 ```typescript
@@ -62,6 +71,8 @@ type Combined = [...[1, 2], ...[3, 4]]; // [1, 2, 3, 4]
 ```
 
 ### 1.5 Indexed Access Types
+
+📚 [TypeScript Docs: Indexed Access Types](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)
 
 You can access properties of types using bracket notation:
 
@@ -83,6 +94,8 @@ Now let's examine each helper type in our implementation.
 
 ### 2.1 `Digit` - Valid Single Digits
 
+📚 [TypeScript Docs: Union Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types)
+
 ```typescript
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 ```
@@ -98,6 +111,8 @@ npm run inspect -- --eval "12 extends Digit ? true : false"
 ```
 
 ### 2.2 `DigitToTupleMap` - The Counting Foundation
+
+📚 [TypeScript Docs: Object Types](https://www.typescriptlang.org/docs/handbook/2/objects.html)
 
 ```typescript
 type DigitToTupleMap = {
@@ -124,6 +139,8 @@ npm run inspect -- --eval "DigitToTupleMap['5']['length']"
 
 ### 2.3 `StrDigitToTuple<T>` - Safe Lookup
 
+📚 [TypeScript Docs: keyof Type Operator](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)
+
 ```typescript
 type StrDigitToTuple<T extends string> = T extends keyof DigitToTupleMap
   ? DigitToTupleMap[T]
@@ -145,6 +162,8 @@ npm run inspect -- --eval 'StrDigitToTuple<"x">'
 ```
 
 ### 2.4 `StrToTuple<T>` - String to Character Array
+
+📚 [TypeScript Docs: Recursive Conditional Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#recursive-conditional-types)
 
 ```typescript
 type StrToTuple<
@@ -182,6 +201,8 @@ npm run inspect -- --eval 'StrToTuple<"123">'
 ```
 
 ### 2.5 `SumStrDigits<D1, D2, D3>` - The Core Addition Trick
+
+📚 [TypeScript Docs: Variadic Tuple Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html#variadic-tuple-types)
 
 ```typescript
 type SumStrDigits<D1 extends string, D2 extends string, D3 extends string> = [
@@ -225,6 +246,8 @@ npm run inspect -- --eval 'SumStrDigits<"2", "3", "0">'
 
 ### 2.6 `ConcatStrings<T>` - Array Back to String
 
+📚 [TypeScript Docs: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
+
 ```typescript
 type ConcatStrings<
   T extends readonly string[],
@@ -252,6 +275,9 @@ npm run inspect -- --eval 'ConcatStrings<["6", "7"]>'
 
 ### 2.7 `StringToNumber<T>` - String to Number Literal
 
+📚 [TypeScript Docs: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
+📚 [TypeScript Docs: infer extends (TS 4.7)](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-7.html#extends-constraints-on-infer-type-variables)
+
 ```typescript
 type StringToNumber<T extends string> = T extends `${infer Res extends number}`
   ? Res
@@ -274,6 +300,9 @@ npm run inspect -- --eval 'StringToNumber<"abc">'
 ```
 
 ### 2.8 `SumTupleOfStrDigits` - The Main Algorithm
+
+📚 [TypeScript Docs: Recursive Conditional Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#recursive-conditional-types)
+📚 [TypeScript Docs: Inferring Within Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types)
 
 This is the most complex type - it implements digit-by-digit addition with carry handling.
 

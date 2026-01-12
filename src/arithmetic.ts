@@ -1,4 +1,5 @@
 // based on https://gist.github.com/Simply007/1a166cf59405169785bee6573f00d0b5.git
+// Check ~/learning folder to understand the concepts used in this implementation
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
@@ -65,4 +66,4 @@ export type Sum<Num1 extends number, Num2 extends number> = StringToNumber<SumSt
 export type Mul<A extends number, B extends number, Counter extends number = 0, ACC extends number = 0> =
   A extends Counter ? ACC : Mul<A, B, Sum<1, Counter>, Sum<B, ACC>>;
 
-
+type testSum = Sum<29, 48>; // 77
