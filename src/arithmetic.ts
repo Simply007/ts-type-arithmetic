@@ -23,14 +23,23 @@ export type SumStrDigits<D1 extends string, D2 extends string, D3 extends string
 
 export type ConcatStrings<T extends readonly string[], Accum extends string = ''> =
   T extends [infer Fst extends string, ...infer TRest extends readonly string[]]
-    ? ConcatStrings<TRest, `${Accum}${Fst}`>
-    : Accum;
+  ? ConcatStrings<TRest, `${Accum}${Fst}`>
+  : Accum;
 
-export type SumTupleOfStrDigits<Num1 extends readonly string[], Num2 extends readonly string[], Carry extends string = '0', Accum extends string = ''> =
+export type SumTupleOfStrDigits<
+  Num1 extends readonly string[],
+  Num2 extends readonly string[],
+  Carry extends string = '0',
+  Accum extends string = ''
+> =
   Num1 extends []
-    ? Carry extends '0' ? `${ConcatStrings<Num2>}${Accum}` : SumTupleOfStrDigits<[Carry], Num2, '0', Accum>
+    ? Carry extends '0'
+      ? `${ConcatStrings<Num2>}${Accum}`
+      : SumTupleOfStrDigits<[Carry], Num2, '0', Accum>
     : Num2 extends []
-      ? Carry extends '0' ? `${ConcatStrings<Num1>}${Accum}` : SumTupleOfStrDigits<[Carry], Num1, '0', Accum>
+      ? Carry extends '0'
+        ? `${ConcatStrings<Num1>}${Accum}`
+        : SumTupleOfStrDigits<[Carry], Num1, '0', Accum>
       : Num1 extends [...infer TRest1 extends readonly string[], infer TStrDigit1 extends string]
         ? Num2 extends [...infer TRest2 extends readonly string[], infer TStrDigit2 extends string]
           ? SumStrDigits<TStrDigit1, TStrDigit2, Carry> extends infer TSum extends number
