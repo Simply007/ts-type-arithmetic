@@ -364,6 +364,9 @@ Sum<2, 3>
 ```
 
 ```bash
+npm run inspect -- --eval 'SumTupleOfStrDigits<["2"], ["3"]>'
+# "5"
+
 npm run inspect -- --eval 'Sum<2, 3>'
 # 5
 ```
@@ -397,6 +400,9 @@ Sum<12, 34>
 - Return: "46"
 
 ```bash
+npm run inspect -- --eval 'SumTupleOfStrDigits<["1", "2"], ["3", "4"]>'
+# "46"
+
 npm run inspect -- --eval 'Sum<12, 34>'
 # 46
 ```
@@ -439,6 +445,9 @@ Sum<55, 67>
 - Return: `${"1"}${"22"}` = "122"
 
 ```bash
+npm run inspect -- --eval 'SumTupleOfStrDigits<["5", "5"], ["6", "7"]>'
+# "122"
+
 npm run inspect -- --eval 'Sum<55, 67>'
 # 122
 ```

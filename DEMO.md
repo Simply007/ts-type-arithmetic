@@ -41,6 +41,10 @@ npm run inspect -- --eval 'SumStrDigits<"2", "4", "0">'
 npm run inspect -- --eval 'SumStrDigits<"1", "3", "0">'
 # 4
 
+# The core algorithm processes digit arrays
+npm run inspect -- --eval 'SumTupleOfStrDigits<["1", "2"], ["3", "4"]>'
+# "46"
+
 # Full result
 npm run inspect -- --eval 'Sum<12, 34>'
 # 46
@@ -65,6 +69,10 @@ npm run inspect -- --eval 'SumStrDigits<"5", "6", "1">'
 
 # 12 splits into carry "1" and digit "2"
 # Carry "1" becomes the leading digit
+
+# The core algorithm handles all the carry logic
+npm run inspect -- --eval 'SumTupleOfStrDigits<["5", "5"], ["6", "7"]>'
+# "122"
 
 # Full Sum showing the result
 npm run inspect -- --eval 'Sum<55, 67>'
@@ -96,5 +104,6 @@ npm run inspect -- --eval \
   'StrToTuple<"67">' \
   'SumStrDigits<"5", "7", "0">' \
   'SumStrDigits<"5", "6", "1">' \
+  'SumTupleOfStrDigits<["5", "5"], ["6", "7"]>' \
   'Sum<55, 67>'
 ```
