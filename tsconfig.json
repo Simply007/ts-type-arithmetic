@@ -13,6 +13,6 @@
     "rootDir": "src",
     "lib": ["ES2020"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "learning"],
   "exclude": ["node_modules", "dist", "test-d", "tools"]
 }

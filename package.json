@@ -14,6 +14,8 @@
     "prebuild": "npm run clean",
     "test:types": "tsd",
     "inspect": "npx tsx tools/inspect-types.ts",
+    "inspect:sum": "npx tsx tools/inspect-types.ts --eval 'Sum<1234,5678>'",
+    "benchmark": "npx tsx tools/benchmark-sum.ts",
     "prepublishOnly": "npm run build && npm run test:types"
   },
   "keywords": [
