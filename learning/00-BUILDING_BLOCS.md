@@ -6,7 +6,40 @@ This document explains how TypeScript's type system can perform arithmetic at co
 
 Before diving into the arithmetic types, let's understand the TypeScript features that make this possible.
 
-### 1.1 Conditional Types
+### 1.1 Generics
+
+📚 [TypeScript Docs: Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
+
+Generics allow types to be parameterized, like functions for types:
+
+```typescript
+type Box<T> = { value: T };
+
+type StringBox = Box<string>;  // { value: string }
+type NumberBox = Box<number>;  // { value: number }
+```
+
+You can add constraints with `extends`:
+
+```typescript
+type NumberOnly<T extends number> = T;
+
+type A = NumberOnly<42>;      // 42
+type B = NumberOnly<"hello">; // Error: Type 'string' does not satisfy constraint 'number'
+```
+
+Default type parameters provide fallback values:
+
+```typescript
+type Container<T = string> = { item: T };
+
+type Default = Container;        // { item: string }
+type Custom = Container<number>; // { item: number }
+```
+
+Generics are the foundation of type-level programming - they let us create reusable type transformations.
+
+### 1.2 Conditional Types
 
 📚 [TypeScript Docs: Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
 
@@ -21,7 +54,7 @@ type B = IsString<42>; // false
 
 The pattern `T extends U ? X : Y` means: "If T is assignable to U, resolve to X, otherwise Y."
 
-### 1.2 The `infer` Keyword
+### 1.3 The `infer` Keyword
 
 📚 [TypeScript Docs: Inferring Within Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types)
 
@@ -36,7 +69,7 @@ type B = GetFirstElement<["a", "b"]>; // "a"
 
 It's like destructuring, but for types. The `infer First` declares a type variable that captures whatever matches that position.
 
-### 1.3 Template Literal Types
+### 1.4 Template Literal Types
 
 📚 [TypeScript Docs: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 
@@ -52,7 +85,7 @@ type A = ExtractName<"Hello, Alice">; // "Alice"
 type B = ExtractName<"Hi, Bob">; // never (doesn't match pattern)
 ```
 
-### 1.4 Tuple Types and Spread
+### 1.5 Tuple Types and Spread
 
 📚 [TypeScript Docs: Tuple Types](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types)
 📚 [TypeScript Docs: Variadic Tuple Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html#variadic-tuple-types)
@@ -70,7 +103,7 @@ The spread operator works with tuples:
 type Combined = [...[1, 2], ...[3, 4]]; // [1, 2, 3, 4]
 ```
 
-### 1.5 Indexed Access Types
+### 1.6 Indexed Access Types
 
 📚 [TypeScript Docs: Indexed Access Types](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)
 
@@ -86,7 +119,7 @@ type Length = [0, 0, 0]["length"]; // 3
 
 **This is the key insight**: A tuple's `"length"` property is a number literal type, not just `number`!
 
-### 1.6 Number to String Conversion
+### 1.7 Number to String Conversion
 
 📚 [TypeScript Docs: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 
@@ -145,12 +178,12 @@ npm run inspect -- --eval "12 extends Digit ? true : false"
 
 ```typescript
 type DigitToTupleMap = {
-  "0": [];
-  "1": [0];
-  "2": [0, 0];
-  "3": [0, 0, 0];
+  0: [];
+  1: [0];
+  2: [0, 0];
+  3: [0, 0, 0];
   // ... up to '9'
-  "9": [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  9: [0, 0, 0, 0, 0, 0, 0, 0, 0];
 };
 ```
 
@@ -201,6 +234,9 @@ type StrToTuple<
 > = T extends `${infer Fst}${infer Rest}`
   ? StrToTuple<Rest, [...Accum, Fst]>
   : Accum;
+
+// ["1", "2", "3"]
+type res = StrToTuple<"123">
 ```
 
 This recursively splits a string into an array of characters.
