@@ -86,6 +86,35 @@ type Length = [0, 0, 0]["length"]; // 3
 
 **This is the key insight**: A tuple's `"length"` property is a number literal type, not just `number`!
 
+### 1.6 Number to String Conversion
+
+📚 [TypeScript Docs: Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
+
+Template literals can convert number literal types to string literal types:
+
+```typescript
+type NumberToString<N extends number> = `${N}`;
+
+type A = NumberToString<3>;   // "3"
+type B = NumberToString<123>; // "123"
+type C = `${42}`;             // "42"
+```
+
+**How it works:**
+
+- When a number literal type is embedded in a template literal type (`${N}`), TypeScript automatically converts it to the corresponding string literal type
+- This is the inverse of `StringToNumber<T>` (see section 2.7)
+
+```bash
+npm run inspect -- --eval '`${3}`'
+# "3"
+
+npm run inspect -- --eval '`${123}`'
+# "123"
+```
+
+This conversion is essential for type-level arithmetic because we need to work with numbers as strings to parse them digit-by-digit.
+
 ---
 
 ## Part 2: The Building Blocks of Type-Level Arithmetic
