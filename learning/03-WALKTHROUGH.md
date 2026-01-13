@@ -1,6 +1,17 @@
 # SumTupleOfStrDigits: Complete State Walkthrough
 
+📚 [TypeScript Docs: Recursive Conditional Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#recursive-conditional-types)
+📚 [TypeScript Docs: Inferring Within Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types)
+
+This is the most complex type - it implements digit-by-digit addition with carry handling.
+
 This document traces through two examples that together cover **all 6 possible states** in the `SumTupleOfStrDigits` algorithm.
+
+**Key insights:**
+
+1. **Right-to-left processing**: Uses `[...Rest, Last]` pattern to extract the last digit
+2. **Carry handling**: When sum >= 10, splits `"12"` into carry `"1"` and digit `"2"`
+3. **Accumulator builds result**: Digits are prepended as `\`${digit}${Accum}\``
 
 ## The 6 States
 
@@ -8,35 +19,50 @@ This document traces through two examples that together cover **all 6 possible s
 type SumTupleOfStrDigits<
   Num1 extends readonly string[],
   Num2 extends readonly string[],
-  Carry extends string = '0',
-  Accum extends string = ''
+  Carry extends string = "0",
+  Accum extends string = ""
 > =
   // State A: Num1 empty, no carry → return result
   Num1 extends []
-    ? Carry extends '0'
+    ? Carry extends "0"
       ? `${ConcatStrings<Num2>}${Accum}`
-      // State B: Num1 empty, has carry → recurse with carry as new Num1
-      : SumTupleOfStrDigits<[Carry], Num2, '0', Accum>
-    // State C: Num2 empty, no carry → return result
-    : Num2 extends []
-      ? Carry extends '0'
-        ? `${ConcatStrings<Num1>}${Accum}`
-        // State D: Num2 empty, has carry → recurse with carry as new Num1
-        : SumTupleOfStrDigits<[Carry], Num1, '0', Accum>
-      // Extract last digit from each number (right-to-left processing)
-      : Num1 extends [...infer TRest1 extends readonly string[], infer TStrDigit1 extends string]
-        ? Num2 extends [...infer TRest2 extends readonly string[], infer TStrDigit2 extends string]
-          ? SumStrDigits<TStrDigit1, TStrDigit2, Carry> extends infer TSum extends number
-            // State E: Both have digits, sum is single digit (0-9) → no carry
-            ? TSum extends Digit
-              ? SumTupleOfStrDigits<TRest1, TRest2, '0', `${TSum}${Accum}`>
-              // State F: Both have digits, sum is two digits (10-18) → with carry
-              : `${TSum}` extends `${infer NextCarry}${infer CurrentDig}`
-                ? SumTupleOfStrDigits<TRest1, TRest2, NextCarry, `${CurrentDig}${Accum}`>
-                : never
-            : never
+      : // State B: Num1 empty, has carry → recurse with carry as new Num1
+        SumTupleOfStrDigits<[Carry], Num2, "0", Accum>
+    : // State C: Num2 empty, no carry → return result
+    Num2 extends []
+    ? Carry extends "0"
+      ? `${ConcatStrings<Num1>}${Accum}`
+      : // State D: Num2 empty, has carry → recurse with carry as new Num1
+        SumTupleOfStrDigits<[Carry], Num1, "0", Accum>
+    : // Extract last digit from each number (right-to-left processing)
+    Num1 extends [
+        ...infer TRest1 extends readonly string[],
+        infer TStrDigit1 extends string
+      ]
+    ? Num2 extends [
+        ...infer TRest2 extends readonly string[],
+        infer TStrDigit2 extends string
+      ]
+      ? SumStrDigits<
+          TStrDigit1,
+          TStrDigit2,
+          Carry
+        > extends infer TSum extends number
+        ? // State E: Both have digits, sum is single digit (0-9) → no carry
+          TSum extends Digit
+          ? SumTupleOfStrDigits<TRest1, TRest2, "0", `${TSum}${Accum}`>
+          : // State F: Both have digits, sum is two digits (10-18) → with carry
+          `${TSum}` extends `${infer NextCarry}${infer CurrentDig}`
+          ? SumTupleOfStrDigits<
+              TRest1,
+              TRest2,
+              NextCarry,
+              `${CurrentDig}${Accum}`
+            >
           : never
-        : never;
+        : never
+      : never
+    : never;
 ```
 
 | State | Condition                  | Action                           |

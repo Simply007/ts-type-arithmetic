@@ -301,69 +301,11 @@ npm run inspect -- --eval 'StringToNumber<"abc">'
 
 ### 2.8 `SumTupleOfStrDigits` - The Main Algorithm
 
-📚 [TypeScript Docs: Recursive Conditional Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#recursive-conditional-types)
-📚 [TypeScript Docs: Inferring Within Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types)
-
-This is the most complex type - it implements digit-by-digit addition with carry handling.
-
-```typescript
-type SumTupleOfStrDigits<
-  Num1 extends readonly string[], // First number as digit array
-  Num2 extends readonly string[], // Second number as digit array
-  Carry extends string = "0", // Current carry
-  Accum extends string = "" // Accumulated result (built right-to-left)
-> =
-  // Base case 1: Num1 is empty
-  Num1 extends []
-    ? Carry extends "0"
-      ? `${ConcatStrings<Num2>}${Accum}` // No carry, prepend remaining Num2
-      : SumTupleOfStrDigits<[Carry], Num2, "0", Accum> // Add carry to Num2
-    : // Base case 2: Num2 is empty
-    Num2 extends []
-    ? Carry extends "0"
-      ? `${ConcatStrings<Num1>}${Accum}` // No carry, prepend remaining Num1
-      : SumTupleOfStrDigits<[Carry], Num1, "0", Accum> // Add carry to Num1
-    : // Recursive case: Both have digits
-    Num1 extends [
-        ...infer TRest1 extends readonly string[],
-        infer TStrDigit1 extends string
-      ]
-    ? Num2 extends [
-        ...infer TRest2 extends readonly string[],
-        infer TStrDigit2 extends string
-      ]
-      ? // Extract last digits from both, add them with carry
-        SumStrDigits<
-          TStrDigit1,
-          TStrDigit2,
-          Carry
-        > extends infer TSum extends number
-        ? // Check if sum is single digit (no carry needed)
-          TSum extends Digit
-          ? SumTupleOfStrDigits<TRest1, TRest2, "0", `${TSum}${Accum}`>
-          : // Sum is 10+ : split into carry and digit
-          `${TSum}` extends `${infer NextCarry}${infer CurrentDigit}`
-          ? SumTupleOfStrDigits<
-              TRest1,
-              TRest2,
-              NextCarry,
-              `${CurrentDigit}${Accum}`
-            >
-          : never
-        : never
-      : never
-    : never;
-```
-
-**Key insights:**
-
-1. **Right-to-left processing**: Uses `[...Rest, Last]` pattern to extract the last digit
-2. **Carry handling**: When sum >= 10, splits `"12"` into carry `"1"` and digit `"2"`
-3. **Accumulator builds result**: Digits are prepended as `\`${digit}${Accum}\``
+See [# SumTupleOfStrDigits: Complete State Walkthrough](./03-WALKTHROUGH.md) for detailed explanation.
 
 ---
 
-## Part 3: Full Walkthrough
+## Part 3: Examples
 
 ### Example 1: Simple (2 + 3 = 5)
 
