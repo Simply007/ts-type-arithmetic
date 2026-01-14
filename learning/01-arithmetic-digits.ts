@@ -1,8 +1,6 @@
 // Simple type-level arithmetic for single digits only
 // This demonstrates the core "tuple length" trick without multi-digit complexity
 
-import { Sum } from "../src/arithmetic.js";
-
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 // Map each digit to a tuple of that length
