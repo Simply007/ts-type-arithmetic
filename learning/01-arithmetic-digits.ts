@@ -28,18 +28,11 @@ type SimpleSum<A extends Digit, B extends Digit> =
 
 // ============ WALKTHROUGH ============
 
-
 type A = DigitToTuple[3]; // [0,0,0]
 type B = DigitToTuple[5]; // [0,0,0,0,0]
 type LengthA = A['length'] // 3
 type ABConcat = [...A, ...B] // [0,0,0,0,0,0,0,0]
 type SumAB = ABConcat['length'] // 8
-
-
-
-
-type x = LengthA
-type y = SumAB
 
 // ============ TESTS ============
 // Test types (inspect with: npm run inspect -- learning/01-arithmetic-digits.ts --pattern "^test")

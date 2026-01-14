@@ -2,8 +2,6 @@
 // Same structure as arithmetic.ts, but simplified to show the core pattern
 // This demonstrates WHY carry handling is needed
 
-type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-
 type StrToTupleMap = {
   '0': [];
   '1': [0];
@@ -40,9 +38,9 @@ type ConcatStrings<T extends readonly string[], Accum extends string = ''> =
 // Main recursive type: process right-to-left, accumulate result
 // Structure matches arithmetic.ts but WITHOUT carry parameter
 type SumTupleNoCarry<
-  Num1 extends readonly string[], // ["1", "2", "3"], | ["1", "2"]
-  Num2 extends readonly string[], // ["4", "5", "6"], | ["4", "5"]
-  Accum extends string = '' // "" | "9"
+  Num1 extends readonly string[], // ["1", "2", "3"], | ["1", "2"] | ["1"] | []
+  Num2 extends readonly string[], // ["4", "5", "6"], | ["4", "5"] | ["4"] | []
+  Accum extends string = '' //       ""               | "9"        | "79"  | "579"
 > =
   // Base case: one side empty, prepend remaining digits
   Num1 extends []
