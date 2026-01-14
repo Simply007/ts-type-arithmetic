@@ -67,3 +67,10 @@ export type Mul<A extends number, B extends number, Counter extends number = 0, 
   A extends Counter ? ACC : Mul<A, B, Sum<1, Counter>, Sum<B, ACC>>;
 
 type testSum = Sum<29, 48>; // 77
+
+         // 123
+type x = StringToNumber<'123'>;
+
+
+
+

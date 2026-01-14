@@ -148,6 +148,10 @@ const sum = add(54, 382);    // Type: 436
 const product = mul(32, 47); // Type: 1504
 ```
 
+### Presentation
+
+You can find a PDF presentation introducing this topic in the [`/assets`](./assets) directory: **[`ts-type-arithmetic-intro.pdf`](./assets/ts-type-arithmetic-intro.pdf)**.
+
 ## Repository Structure
 
 ```plain
