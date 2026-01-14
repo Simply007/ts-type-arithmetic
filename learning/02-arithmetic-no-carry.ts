@@ -4,7 +4,7 @@
 
 type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
-type DigitToTupleMap = {
+type StrToTupleMap = {
   '0': [];
   '1': [0];
   '2': [0, 0];
@@ -19,7 +19,7 @@ type DigitToTupleMap = {
 
 // Convert string digit to tuple
 type StrDigitToTuple<T extends string> =
-  T extends keyof DigitToTupleMap ? DigitToTupleMap[T] : never;
+  T extends keyof StrToTupleMap ? StrToTupleMap[T] : never;
 
 // Split string "123" → ["1", "2", "3"]
 type StrToTuple<T extends string, Accum extends readonly string[] = []> =
@@ -69,13 +69,24 @@ type StringToNumber<T extends string> =
 type Sum<Num1 extends number, Num2 extends number> =
   StringToNumber<SumStringNumbers<`${Num1}`, `${Num2}`>>;
 
+// ============ WALKTHROUGH ============
+type A = 123
+type B = 456
+type StrA = `${A}` // "123"
+type StrB = `${B}` // "456"
+type TupleA = StrToTuple<StrA> // ["1","2","3"]
+type TupleB = StrToTuple<StrB> // ["4","5","6"]
+type StrSum = SumTupleNoCarry<TupleA, TupleB> // "579"
+type NumSum = StringToNumber<StrSum> // 579 🎉
+
 // ============ TESTS ============
+// Test types (inspect with: npm run inspect -- learning/arithmetic-no-carry.ts --pattern "^test")
 // Works correctly (no digit overflow):
 type test1 = Sum<12, 34>; // 46 ✓
 type test2 = Sum<11, 22>; // 33 ✓
 type test3 = Sum<100, 23>; // 123 ✓
-type test3ba = Sum<0, 23>; // 1023 ✓
-type test3bb = Sum<23, 0>; // 1023 ✓
+type test3ba = Sum<0, 23>; // 23 ✓
+type test3bb = Sum<23, 0>; // 23 ✓
 type test3b = Sum<1000, 23>; // 1023 ✓
 type test3c = Sum<23, 1000>; // 1023 ✓
 type test4 = Sum<5, 3>; // 8 ✓
