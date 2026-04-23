@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsgo",
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "test:types": "tsd",
@@ -32,7 +32,8 @@
     "@types/node": "^25.0.6",
     "tsd": "^0.31.0",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.0"
+    "typescript": "npm:@typescript/native-preview@^7.0.0-dev.20260421.2",
+    "typescript-api": "npm:typescript@^5.9"
   },
   "tsd": {
     "directory": "test-d",
@@ -43,5 +44,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@ccssmnn/intl": "^0.1.1"
   }
 }
