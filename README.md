@@ -70,6 +70,18 @@ type Result2 = Sum<999, 1>;    // 1000
 type Result3 = Mul<12, 10>;    // 120
 ```
 
+### Step 4: Real-Life Examples
+
+📄 **[04-real-life-examples.ts](./learning/04-real-life-examples.ts)** — runnable companion
+📚 **[REAL_LIFE_EXAMPLES.md](./REAL_LIFE_EXAMPLES.md)** — curated catalog of published-library types
+
+Same constructs (template-literal `infer`, recursion, indexed access) as the rest of this repo, used in the wild:
+
+- **`GetSubConfig<T, K>`** from [CKEditor5](https://github.com/ckeditor/ckeditor5) — walks a dotted config path at the type level (`'toolbar.items'` → the right slot's type).
+- **`messages` / `createIntl`** from [`@ccssmnn/intl`](https://github.com/ccssmnn/intl) — parses ICU-style message strings at the type level; placeholders tagged `:number` enforce numeric args at the call site.
+
+Both examples include valid and intentionally-broken uses; the broken lines are pinned with `@ts-expect-error` so the file compiles cleanly.
+
 ## Quick Start
 
 ```bash
@@ -155,15 +167,17 @@ You can find a PDF presentation introducing this topic in the [`/assets`](./asse
 ## Repository Structure
 
 ```plain
-├── learning/                    # Step-by-step learning materials
-│   ├── 00-BUILDING_BLOCS.md    # TypeScript building blocks (start here!)
-│   ├── 01-arithmetic-digits.ts  # Single digit addition
-│   ├── 02-arithmetic-no-carry.ts# Multi-digit without carry
-│   └── 03-WALKTHROUGH.md        # Full algorithm walkthrough
+├── learning/                      # Step-by-step learning materials
+│   ├── 00-BUILDING_BLOCS.md       # TypeScript building blocks (start here!)
+│   ├── 01-arithmetic-digits.ts    # Single digit addition
+│   ├── 02-arithmetic-no-carry.ts  # Multi-digit without carry
+│   ├── 03-WALKTHROUGH.md          # Full algorithm walkthrough
+│   └── 04-real-life-examples.ts   # Published-library types using the same constructs
 ├── src/
-│   ├── arithmetic.ts            # Full implementation
-│   └── index.ts                 # Public API
-└── test-d/                      # Type tests
+│   ├── arithmetic.ts              # Full implementation
+│   └── index.ts                   # Public API
+├── test-d/                        # Type tests
+└── REAL_LIFE_EXAMPLES.md          # Catalog of complex types from CKEditor5 and @ccssmnn/intl
 ```
 
 ## Limitations
