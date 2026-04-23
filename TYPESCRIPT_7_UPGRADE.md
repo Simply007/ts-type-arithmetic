@@ -102,3 +102,63 @@ All existing settings remain valid in TS 7.0:
 `npm run inspect`, `npm run inspect:sum`, and `npm run benchmark` invoke the TypeScript compiler API to evaluate types at runtime. These scripts continue to use `typescript-api` (TS 5.9.3) because TS 7.0 does not yet expose a stable JS programmatic API. The printed `TypeScript version: 5.9.3` in benchmark output is expected.
 
 This limitation is temporary — the TS team plans to ship a stable programmatic API in TypeScript 7.1.
+
+---
+
+## TODO — finish when TypeScript 7.0 stable ships
+
+### 1. Replace the dev preview with the official package
+
+```diff
+-    "typescript": "npm:@typescript/native-preview@^7.0.0-dev.20260421.2",
++    "typescript": "^7.0.0",
+```
+
+The `@typescript/native-preview` package is a pre-release channel. Once `typescript@7.0.0` is published to npm under the canonical package name this alias can be dropped and the lockfile shrunk by one entry.
+
+### 2. Verify the binary name (`tsgo` vs `tsc`)
+
+The preview ships a `tsgo` binary. Check whether the stable `typescript@7.0.0` exposes `tsc`, `tsgo`, or both, and update the build script accordingly:
+
+```diff
+-    "build": "tsgo",
++    "build": "tsc",   # or keep "tsgo" — confirm in release notes
+```
+
+### 3. Collapse `typescript-api` once TS 7.1 ships the programmatic API
+
+When `typescript@7.1.0` is released with a stable JS API:
+
+```diff
+-    "typescript-api": "npm:typescript@^5.9",
+```
+
+Then revert the tool imports:
+
+```diff
+# tools/inspect-types.ts, tools/benchmark-sum.ts, tools/compare-calculator.ts
+-import * as ts from 'typescript-api';
++import * as ts from 'typescript';
+```
+
+After this change `npm run inspect`, `npm run inspect:sum`, `npm run benchmark`, and `npm run compare` will all report `TypeScript version: 7.x` instead of `5.9.3`.
+
+### 4. Re-run benchmarks and update the docs
+
+Replace the dev-build numbers in this file and in `CALCULATOR_COMPARISON.md` with measurements from the stable release:
+
+- [ ] Re-run `tsc --noEmit` vs `tsgo --noEmit` (or whatever the stable binary is)
+- [ ] Re-run `npm run compare` and update the tables in `CALCULATOR_COMPARISON.md`
+- [ ] Remove the `~dev` / `0-dev.` version tags from all documentation
+
+### 5. Check ecosystem compatibility
+
+Verify these devDependencies work with stable TS 7.0 before merging:
+
+- [ ] `tsd` — currently `^0.31.0`; check its changelog for TS 7.0 support
+- [ ] `tsx` — currently `^4.7.0`; used to run the tools via `npx tsx`
+- [ ] `@types/node` — currently `^25.0.6`; confirm still resolves correctly under the new `types: []` default
+
+### 6. Remove this TODO section
+
+Once all items above are checked off, delete this section before merging.
