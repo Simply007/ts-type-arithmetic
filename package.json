@@ -16,6 +16,7 @@
     "inspect": "npx tsx tools/inspect-types.ts",
     "inspect:sum": "npx tsx tools/inspect-types.ts --eval 'Sum<1234,5678>'",
     "benchmark": "npx tsx tools/benchmark-sum.ts",
+    "compare": "npx tsx tools/compare-calculator.ts",
     "prepublishOnly": "npm run build && npm run test:types"
   },
   "keywords": [
