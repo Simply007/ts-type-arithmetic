@@ -166,6 +166,30 @@ export type DecoratedMethodEvent<
 
 ---
 
+## Option 6 — `Mixed<Base, Mixin>` (class-level intersection)
+
+**File:** [`packages/ckeditor5-utils/src/mix.ts`](https://github.com/ckeditor/ckeditor5/blob/master/packages/ckeditor5-utils/src/mix.ts)
+
+```ts
+export type Constructor<Instance = object> =
+  abstract new ( ...args: Array<any> ) => Instance;
+
+export type Mixed<Base extends Constructor, Mixin extends object> = {
+  new ( ...args: ConstructorParameters<Base> ): Mixin & InstanceType<Base>;
+  prototype: Mixin & InstanceType<Base>;
+} & {
+  // static fields from Base…
+};
+```
+
+**Mirrors in your repo:** less direct — but shows how **built-in utility types** (`ConstructorParameters`, `InstanceType`) compose, echoing how your `Sum` composes simpler types.
+
+**Real-world payoff:** every `ObservableMixin`, `EmitterMixin`, `BubblingEmitterMixin` etc. is typed through this.
+
+**Use it if you want to show:** the type system operating on **classes**, not just values — a different axis from everything above.
+
+---
+
 ## Option 7 — `@ccssmnn/intl` `messages` + `createIntl` (typed ICU placeholders) · _shown in [runnable file](./learning/04-real-life-examples.ts)_
 
 **Package:** [`@ccssmnn/intl`](https://github.com/ccssmnn/intl) — dependency already in this repo
@@ -190,30 +214,6 @@ t( 'count',    { num: 'dummy' } );  // ❌ Type 'string' is not assignable to ty
 **Real-world payoff:** no runtime validation of placeholder types, no boilerplate schemas — just write the message string, and TypeScript derives the correct call signature from the literal.
 
 **Use it if you want to show:** the same template-literal-infer trick you teach on numbers, applied to a real i18n library that ships on npm.
-
----
-
-## Option 6 — `Mixed<Base, Mixin>` (class-level intersection)
-
-**File:** [`packages/ckeditor5-utils/src/mix.ts`](https://github.com/ckeditor/ckeditor5/blob/master/packages/ckeditor5-utils/src/mix.ts)
-
-```ts
-export type Constructor<Instance = object> =
-  abstract new ( ...args: Array<any> ) => Instance;
-
-export type Mixed<Base extends Constructor, Mixin extends object> = {
-  new ( ...args: ConstructorParameters<Base> ): Mixin & InstanceType<Base>;
-  prototype: Mixin & InstanceType<Base>;
-} & {
-  // static fields from Base…
-};
-```
-
-**Mirrors in your repo:** less direct — but shows how **built-in utility types** (`ConstructorParameters`, `InstanceType`) compose, echoing how your `Sum` composes simpler types.
-
-**Real-world payoff:** every `ObservableMixin`, `EmitterMixin`, `BubblingEmitterMixin` etc. is typed through this.
-
-**Use it if you want to show:** the type system operating on **classes**, not just values — a different axis from everything above.
 
 ---
 

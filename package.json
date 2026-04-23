@@ -29,6 +29,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@ccssmnn/intl": "^0.1.1",
     "@types/node": "^25.0.6",
     "ckeditor5": "^48.0.1",
     "tsd": "^0.31.0",
@@ -44,8 +45,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "@ccssmnn/intl": "^0.1.1"
   }
 }

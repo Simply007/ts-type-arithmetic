@@ -50,17 +50,17 @@ export const brokenItems: GetSubConfig<EditorConfig, 'toolbar.items'> = 'bold, i
 // a required params object per key. Pure template-literal-infer
 // machinery — the same trick this repo uses on digits.
 
-const copy = messages( {
-	greeting: 'Hello {$name}!',
-	count:    'You have {$num :number} items',
-} );
+const copy = messages({
+  greeting: 'Hello {$name}!',
+  count: 'You have {$num :number} items',
+});
 
-const t = createIntl( copy, 'en' );
+const t = createIntl(copy, 'en');
 
 // ✅ placeholders satisfied with the correct types
-export const greeting = t( 'greeting', { name: 'World' } ); // "Hello World!"
-export const itemsMsg = t( 'count',    { num:  42 } );      // "You have 42 items"
+export const greeting = t('greeting', { name: 'World' }); // "Hello World!"
+export const itemsMsg = t('count', { num: 42 });          // "You have 42 items"
 
 // ❌ the `:number` tag pins `num` to number at the type level
 // @ts-expect-error — 'dummy' is a string, not a number
-export const brokenCount = t( 'count', { num: 'dummy' } );
+export const brokenCount = t('count', { num: 'dummy' });
